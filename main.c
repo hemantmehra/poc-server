@@ -16,15 +16,15 @@ typedef struct {
 
 void *handle_client(void *arg) {
     client_t *client = (client_t *)arg;
-    char request[1024];
+    char request[1024] = {0};
     int bytes_read = read(client->socket_fd, request, sizeof(request));
     if (bytes_read <= 0) {
         // The client disconnected.
         close(client->socket_fd);
         return NULL;
     }
-
-    char response[] = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, world!";
+    printf("Request:\n%s", request);
+    char response[] = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, world!\n";
     int bytes_written = write(client->socket_fd, response, sizeof(response));
     if (bytes_written <= 0) {
         // The client disconnected.
